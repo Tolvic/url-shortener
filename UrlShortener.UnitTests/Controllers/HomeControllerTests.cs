@@ -16,6 +16,12 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
+        public void ShouldImplementController()
+        {
+            typeof(HomeController).Should().BeAssignableTo<Controller>();
+        }
+
+        [Test]
         public void Index_returns_ViewResult()
         {
             // Act
