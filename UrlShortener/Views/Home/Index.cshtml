@@ -1,21 +1,30 @@
 ﻿@model UrlShortener.Models.Url
 
+@section Scripts{
+    <script src="~/js/urlShortener.js"></script>
+
+
+    <script>
+        urlShortener.urlShortener.init();
+    </script>
+}
+
 <div class="container-sm">
     <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
             @using (Html.BeginForm(
-         "Get",
-         "ShortUrl",
-         FormMethod.Post,
-         new
-         {
-             autocomplete = "off",
-             id = "url-shortener",
-             aria_label = "url shortener",
-             role = "form",
-             @class="my-2"
-         }))
+        "Get",
+        "ShortUrl",
+        FormMethod.Post,
+        new
+        {
+            autocomplete = "off",
+            id = "url-shortener",
+            aria_label = "url shortener",
+            role = "form",
+            @class = "my-2"
+        }))
             {
                 @Html.TextBoxFor(x => x.LongUrl, new
                 {
@@ -35,7 +44,7 @@
         </div>
         <div class="col-4"></div>
     </div>
-    
 
-   
+
+
 </div>
