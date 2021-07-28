@@ -3,16 +3,23 @@ using NUnit.Framework;
 using UrlShortener.Controllers;
 using FluentAssertions;
 using System.Linq;
+using UrlShortener.Models;
 
 namespace UrlShortener.UnitTests.Controllers
 {
     class ShortUrlControllerTests
     {
+        private UrlToShorten _validUrlToShorten;
         private ShortUrlController _shortUrlController;
 
         [SetUp]
         public void Setup()
         {
+            _validUrlToShorten = new UrlToShorten
+            {
+                Url = "https://example.com/page1"
+            };
+
             _shortUrlController = new ShortUrlController();
         }
 
@@ -31,13 +38,26 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
-        public void Shorten_shouldReturnOkResult()
+        public void Shorten_whenpassedvalidUrlToShorten_shouldReturnOkResult()
         {
             // Act
-            var result = _shortUrlController.Shorten();
+            var result = _shortUrlController.Shorten(_validUrlToShorten);
 
             // Assert
             result.Should().BeOfType<OkResult>();
+        }
+
+        [Test]
+        public void Shorten_whenMoleStateIsInvalid_shouldReturnBadRequest()
+        {
+            // Arrange
+            _shortUrlController.ModelState.AddModelError("error", "error");
+
+            // Act
+            var result = _shortUrlController.Shorten(_validUrlToShorten);
+
+            // Assert
+            result.Should().BeOfType<BadRequestResult>();
         }
     }
 }
