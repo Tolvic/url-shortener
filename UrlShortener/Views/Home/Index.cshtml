@@ -14,22 +14,23 @@
         <div class="col-4"></div>
         <div class="col-4">
             @using (Html.BeginForm(
-       "Shorten",
-       "ShortUrl",
-       FormMethod.Post,
-       new
-       {
-           autocomplete = "off",
-           id = "url-shortener",
-           aria_label = "url shortener",
-           role = "form",
-           @class = "my-2"
-       }))
+             "Shorten",
+             "ShortUrl",
+             FormMethod.Post,
+             new
+             {
+                 autocomplete = "off",
+                 id = "url-shortener",
+                 aria_label = "url shortener",
+                 role = "form",
+                 @class = "my-2"
+             }))
             {
+
                 @Html.ValidationMessageFor(x => x.Url, "", new
-               {
-                   @class = "text-danger"
-               })
+                {
+                    @class = "text-danger"
+                })
 
                 @Html.TextBoxFor(x => x.Url, new
                 {

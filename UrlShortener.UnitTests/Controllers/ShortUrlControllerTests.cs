@@ -38,6 +38,14 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
+        public void Shorten_ShouldBeDecoratedWithValidateAntiForgeryToken()
+        {
+            var shortenMethod = typeof(ShortUrlController).Methods().Single(x => x.Name == "Shorten");
+
+            shortenMethod.Should().BeDecoratedWith<ValidateAntiForgeryTokenAttribute>();
+        }
+
+        [Test]
         public void Shorten_whenpassedvalidUrlToShorten_shouldReturnOkResult()
         {
             // Act
