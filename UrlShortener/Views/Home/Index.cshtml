@@ -1,5 +1,41 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model UrlShortener.Models.Url
 
-<p>Hello World!</p>
+<div class="container-sm">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            @using (Html.BeginForm(
+         "Get",
+         "ShortUrl",
+         FormMethod.Post,
+         new
+         {
+             autocomplete = "off",
+             id = "url-shortener",
+             aria_label = "url shortener",
+             role = "form",
+             @class="my-2"
+         }))
+            {
+                @Html.TextBoxFor(x => x.LongUrl, new
+                {
+                    type = "text",
+                    aria_label = "long url",
+                    @class = "form-control",
+                    id = "long-url",
+                    placeholder = "Long URL"
+                })
+                @Html.ValidationMessageFor(x => x.LongUrl, "", new
+                {
+                    @class = "text-danger"
+                })
+
+                <button type="submit" class="btn btn-primary mt-2">Get Short URL</button>
+            }
+        </div>
+        <div class="col-4"></div>
+    </div>
+    
+
+   
+</div>
