@@ -13,7 +13,7 @@ namespace UrlShortener.Models
         [RegularExpression(urlRegex, ErrorMessage = "Please enter a valid URL.")]
         public string Url {
             get => _url;
-            init => HttpUtility.HtmlEncode(value);
+            init => _url = HttpUtility.HtmlEncode(value);
         }
     }
 }
