@@ -1,4 +1,4 @@
-﻿@model UrlShortener.Models.Url
+﻿@model UrlShortener.Models.UrlToShorten
 
 @section Scripts{
     <script src="~/js/urlShortener.js"></script>
@@ -26,12 +26,12 @@
            @class = "my-2"
        }))
             {
-                @Html.ValidationMessageFor(x => x.LongUrl, "", new
+                @Html.ValidationMessageFor(x => x.Url, "", new
                {
                    @class = "text-danger"
                })
 
-                @Html.TextBoxFor(x => x.LongUrl, new
+                @Html.TextBoxFor(x => x.Url, new
                 {
                     type = "text",
                     aria_label = "long url",
