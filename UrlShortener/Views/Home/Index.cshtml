@@ -14,18 +14,23 @@
         <div class="col-4"></div>
         <div class="col-4">
             @using (Html.BeginForm(
-        "Shorten",
-        "ShortUrl",
-        FormMethod.Post,
-        new
-        {
-            autocomplete = "off",
-            id = "url-shortener",
-            aria_label = "url shortener",
-            role = "form",
-            @class = "my-2"
-        }))
+       "Shorten",
+       "ShortUrl",
+       FormMethod.Post,
+       new
+       {
+           autocomplete = "off",
+           id = "url-shortener",
+           aria_label = "url shortener",
+           role = "form",
+           @class = "my-2"
+       }))
             {
+                @Html.ValidationMessageFor(x => x.LongUrl, "", new
+               {
+                   @class = "text-danger"
+               })
+
                 @Html.TextBoxFor(x => x.LongUrl, new
                 {
                     type = "text",
@@ -34,10 +39,7 @@
                     id = "long-url",
                     placeholder = "Long URL"
                 })
-                @Html.ValidationMessageFor(x => x.LongUrl, "", new
-                {
-                    @class = "text-danger"
-                })
+
 
                 <button type="submit" class="btn btn-primary mt-2">Get Short URL</button>
             }
