@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UrlShortener.ModelBuilder;
+using UrlShortener.Repository;
 using UrlShortener.Services;
 using UrlShortener.Validators;
 
@@ -26,6 +27,7 @@ namespace UrlShortener
             services.AddTransient<IUrlValidator, UrlValidator>();
             services.AddTransient<IShortenedUrlBuilder, ShortenedUrlBuilder>();
             services.AddTransient<IRandomUrlGenerator, RandomUrlGenerator>();
+            services.AddTransient<IShortenUrlRepository, ShortenedUrlRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
