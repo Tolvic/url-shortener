@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UrlShortener.ModelBuilder;
 using UrlShortener.Validators;
 
 namespace UrlShortener
@@ -22,6 +23,7 @@ namespace UrlShortener
             services.AddControllersWithViews();
 
             services.AddTransient<IUrlValidator, UrlValidator>();
+            services.AddTransient<IShortenedUrlBuilder, ShortenedUrlBuilder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
