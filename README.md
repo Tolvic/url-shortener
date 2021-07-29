@@ -14,6 +14,11 @@ Build the solution
 * This can be done either through visual studio or by running the `dotnet build` command from within the UrlShortener directory
 * Note: Client Side libraries are installed using [LibMan](https://docs.microsoft.com/en-us/aspnet/core/client-side/libman/?view=aspnetcore-5.0) and this should happen automatically on rebuild 
 
+Set up a Databse
+* Ensure that you have SQL Server installed
+* Ensure that the connection string server name in appsettings.json matches your local sql server name
+* Within in Visual Studio > Package Manager Console run `Update-Database`
+
 Run the solution
 * This can be done either through visual studio or using the `dotnet run` command
 
