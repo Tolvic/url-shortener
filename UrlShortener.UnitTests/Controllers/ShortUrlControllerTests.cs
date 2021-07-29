@@ -50,16 +50,6 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
-        public void Shorten_whenpassedvalidUrlToShorten_shouldReturnOkResult()
-        {
-            // Act
-            var result = _shortUrlController.Shorten(_validUrlToShorten);
-
-            // Assert
-            result.Should().BeOfType<OkResult>();
-        }
-
-        [Test]
         public void Shorten_whenModleStateIsInvalid_shouldReturnBadRequest()
         {
             // Arrange
@@ -93,6 +83,19 @@ namespace UrlShortener.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestResult>();
+        }
+
+        [Test]
+        public void Shorten_whenpassedvalidUrlToShorten_shouldReturnOkResult()
+        {
+            // Arrange
+            _mockUrlValidator.Setup(x => x.IsUrl(_validUrlToShorten.Url)).Returns(true);
+
+            // Act
+            var result = _shortUrlController.Shorten(_validUrlToShorten);
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
         }
     }
 }
