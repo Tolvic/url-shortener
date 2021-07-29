@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UrlShortener.Services
 {
-    public class RandomUrlGenerator
+    public class RandomUrlGenerator : IRandomUrlGenerator
     {
         private const int urlLength = 10;
 
