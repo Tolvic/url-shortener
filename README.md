@@ -60,10 +60,11 @@ Individual test files can be specified rather than the entire scripts folder if 
 
 
 ## Future Developent Plans
+- [ ] Use a more sophisticated means of generating short URLs 
+- [ ] Enhance security with greater sanitisation and validation of user inputs
 - [ ] Add Integration Tests
 - [ ] Add Functional/End2End Tests using Selenium
 - [ ] Make Asynchronous
-- [ ] Use a more sophisticated means of generating short URLs 
 - [ ] defensive programming with all classes employing guard clauses
 - [ ] Validate that a short url is not already in db table before attempting to add
 - [ ] Better error handling
