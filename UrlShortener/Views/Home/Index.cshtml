@@ -11,8 +11,9 @@
 
 <div class="container-sm">
     <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+
             @using (Html.BeginForm(
              "Shorten",
              "ShortUrl",
@@ -23,14 +24,15 @@
                  id = "url-shortener",
                  aria_label = "url shortener",
                  role = "form",
-                 @class = "my-2"
-             }))
-            {
+                 @class = "my-5"
+             })) { 
+            <div class="input-group my-2">
 
-                @Html.ValidationMessageFor(x => x.Url, "", new
-                {
-                    @class = "text-danger"
-                })
+                <p id="error-message" class="text-danger hide">Opps something went wrong. Make sure to use a valid URL and try again.</p>           
+                @Html.ValidationMessageFor(x => x.Url, "", new { @class = "text-danger" })
+            </div>
+            
+            <div class="input-group my-2">
 
                 @Html.TextBoxFor(x => x.Url, new
                 {
@@ -40,12 +42,20 @@
                     id = "long-url",
                     placeholder = "Long URL"
                 })
+            </div>
 
+            <div class="input-group justify-content-center my-2">
+                <button type="submit" class="btn btn-primary">Get Short URL</button>
+            </div>
 
-                <button type="submit" class="btn btn-primary mt-2">Get Short URL</button>
+            <div id="short-url-output-group" class="input-group my-2 hide">
+                <input id="short-url" class="form-control" name="shortUrl" for="long=url">
+                <button class="btn btn-outline-secondary" type="button" id="copy-to-clipboard-button">Copy</button>
+            </div>
+
             }
         </div>
-        <div class="col-4"></div>
+        <div class="col-2"></div>
     </div>
 
 

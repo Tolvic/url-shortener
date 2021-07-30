@@ -11,9 +11,9 @@ urlShortener.utilities = (function () {
                     type: form.attr("method"),
                     data: form.serialize(),
                     timeout: 30000,
-                    success: function () {
+                    success: function (data) {
                         if (isFunction(successCallback)) {
-                            successCallback();
+                            successCallback(data);
                         }
                     },
                     error: function () {

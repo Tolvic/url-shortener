@@ -13,7 +13,7 @@ describe("urlShortener.urlShortener", function () {
 
     var utilitiesModule = urlShortener.utilities;
     var urlShortenerModule = urlShortener.urlShortener;
-    var form, submitButton, urlField;
+    var form, submitButton, urlField, shortUrlField, copyToClipboardButton, errorMessage, outputGroup;
 
     beforeEach(function () {
         var mockHtml = getMockHtml();
@@ -22,6 +22,11 @@ describe("urlShortener.urlShortener", function () {
         form = $("#url-shortener");
         submitButton = form.find("button");
         urlField = $("#long-url");
+        shortUrlField = $("#short-url");
+        copyToClipboardButton = $("#copy-to-clipboard-button");
+        errorMessage = $("#error-message");
+        outputGroup = $("#short-url-output-group");
+
     });
 
     afterEach(function () {
@@ -39,12 +44,63 @@ describe("urlShortener.urlShortener", function () {
         expect(utilitiesModule.ajaxFormInit).toHaveBeenCalledWith(form, urlShortenerModule.sucessCallback, urlShortenerModule.errorCallback);
     });
 
-    
+    it("should call document.executeCommand(copy) when copy to clickboard button is clicked", function () {
+        // arrange
+        spyOn(document, 'execCommand');
+        urlShortenerModule.init();
+
+        // act
+        copyToClipboardButton.click()
+
+        // assert
+        expect(document.execCommand).toHaveBeenCalledWith("Copy");
+    });
+
+    it("should hide error message when successCallback is called", function () {
+        // arrange
+        errorMessage.removeClass("hide");
+
+        // act
+        urlShortenerModule.sucessCallback("")
+
+        // assert
+        expect(errorMessage.hasClass("hide"))
+    });
+
+    it("should set value of shortUrlField when successCallback is called", function () {
+        // act
+        urlShortenerModule.sucessCallback("test");
+
+        // assert
+        expect(shortUrlField.val()).toBe("test");
+    });
+
+    it("should show shortUrlField when successCallback is called", function () {
+        // act
+        urlShortenerModule.sucessCallback("test");
+
+        // assert
+        expect(outputGroup.hasClass("hide")).toBe(false);
+    });
+
+    it("should show error message when erroCallback is called", function () {
+        // act
+        urlShortenerModule.errorCallback();
+
+        // assert
+        expect(errorMessage.hasClass("hide")).toBe(false);
+    });
+
 
     function getMockHtml() {
         return '<form id="url-shortener" action="exampleURl" method="POST">' +
+            '<p id="error-message" class="text-danger hide">Opps something went wrong. Make sure to use a valid URL and try again.</p>' +
             '<input id="long-url" name="LongUrl" type="text" value="">' +
             '<button type="submit" class="btn btn-std btn-primary mt-4">Get Short URL</button>' +
+            '<div id="short-url-output-group">' +
+            '<input id="short-url" name="shortUrl" for="long=url">' +
+            '<button type="button" id="copy-to-clipboard-button">Copy</button>' +
+            '</div>' +
             '</form>';
     }
 
