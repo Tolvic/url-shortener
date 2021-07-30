@@ -7,6 +7,7 @@ using UrlShortener.Models;
 using Moq;
 using UrlShortener.Validators;
 using UrlShortener.ModelBuilder;
+using Microsoft.AspNetCore.Http;
 
 namespace UrlShortener.UnitTests.Controllers
 {
@@ -17,6 +18,7 @@ namespace UrlShortener.UnitTests.Controllers
 
         private Mock<IUrlValidator> _mockUrlValidator;
         private Mock<IShortenedUrlBuilder> _mockShortenedUrlBuilder;
+        private Mock<IHttpContextAccessor> _mockHttpContextAccessor;
         private ShortUrlController _shortUrlController;
 
         [SetUp]
@@ -29,7 +31,8 @@ namespace UrlShortener.UnitTests.Controllers
 
             _mockUrlValidator = new Mock<IUrlValidator>();
             _mockShortenedUrlBuilder = new Mock<IShortenedUrlBuilder>();
-            _shortUrlController = new ShortUrlController(_mockUrlValidator.Object, _mockShortenedUrlBuilder.Object);
+            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            _shortUrlController = new ShortUrlController(_mockUrlValidator.Object, _mockShortenedUrlBuilder.Object, _mockHttpContextAccessor.Object);
         }
 
         [Test]
@@ -126,7 +129,7 @@ namespace UrlShortener.UnitTests.Controllers
             var result = _shortUrlController.Shorten(_validUrlToShorten) as OkObjectResult;
 
             // Assert
-            result.Value.Should().Be(_shortUrl);
+            result.Value.Should().Be($"https://test.com/{_shortUrl}");
         }
 
         private void SetupHappyPathMocking()
@@ -139,6 +142,8 @@ namespace UrlShortener.UnitTests.Controllers
 
             _mockUrlValidator.Setup(x => x.IsUrl(_validUrlToShorten.Url)).Returns(true);
             _mockShortenedUrlBuilder.Setup(x => x.Build(It.Is<UrlToShorten>(x => x.Url == _validUrlToShorten.Url))).Returns(shortededUrl);
+            _mockHttpContextAccessor.Setup(x => x.HttpContext.Request.Scheme).Returns("https");
+            _mockHttpContextAccessor.Setup(x => x.HttpContext.Request.Host).Returns(new HostString("test.com"));
         }
     }
 }

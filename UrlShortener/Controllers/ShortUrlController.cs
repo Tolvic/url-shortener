@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using UrlShortener.ModelBuilder;
 using UrlShortener.Models;
 using UrlShortener.Validators;
@@ -9,11 +10,13 @@ namespace UrlShortener.Controllers
     {
         private readonly IUrlValidator _urlValidator;
         private readonly IShortenedUrlBuilder _shortenedUrlBuilder;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ShortUrlController(IUrlValidator urlValidator, IShortenedUrlBuilder shortenedUrlBuilder)
+        public ShortUrlController(IUrlValidator urlValidator, IShortenedUrlBuilder shortenedUrlBuilder, IHttpContextAccessor httpContextAccessor)
         {
             _urlValidator = urlValidator;
             _shortenedUrlBuilder = shortenedUrlBuilder;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -27,7 +30,14 @@ namespace UrlShortener.Controllers
 
             var shortenedUrl = _shortenedUrlBuilder.Build(urlToShorten);
 
-            return Ok(shortenedUrl.ShortUrl);
+            var result = BuildFormattedUrl(shortenedUrl);
+
+            return Ok(result);
+        }
+
+        private string BuildFormattedUrl(ShortenedUrl shortenedUrl)
+        {
+            return $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{shortenedUrl.ShortUrl}";
         }
     }
 }
