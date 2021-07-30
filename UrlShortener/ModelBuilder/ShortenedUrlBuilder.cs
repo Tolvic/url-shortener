@@ -17,15 +17,15 @@ namespace UrlShortener.ModelBuilder
 
         public ShortenedUrl Build(UrlToShorten urlToShorten)
         {
-            var result = new ShortenedUrl
-            {
-                Url = urlToShorten.Url,
-                ShortUrl = _shortenedUrlRepository.GetShortUrl(urlToShorten.Url)
-            };
+            var result = _shortenedUrlRepository.GetByShortUrl(urlToShorten.Url);
 
-            if (result.ShortUrl == null)
+            if (result is null)
             {
-                result.ShortUrl = _randomUrlGenerator.Generate();
+                result = new ShortenedUrl
+                {
+                    Url = urlToShorten.Url,
+                    ShortUrl = _randomUrlGenerator.Generate()
+                };
 
                 _shortenedUrlRepository.Add(result);
             }

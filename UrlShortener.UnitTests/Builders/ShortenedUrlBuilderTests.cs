@@ -34,7 +34,7 @@ namespace UrlShortener.UnitTests.Builders
             _ = _shortenedUrlBuilder.Build(_urlToShorten);
 
             // Assert
-            _MockShortenedUrlrepository.Verify(x => x.GetShortUrl(_urlToShorten.Url));
+            _MockShortenedUrlrepository.Verify(x => x.GetByShortUrl(_urlToShorten.Url));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace UrlShortener.UnitTests.Builders
                 ShortUrl = shortUrl
             };
 
-            _MockShortenedUrlrepository.Setup(x => x.GetShortUrl(_urlToShorten.Url)).Returns(shortUrl);
+            _MockShortenedUrlrepository.Setup(x => x.GetByShortUrl(_urlToShorten.Url)).Returns(expectedResult);
 
             // Act
             var result = _shortenedUrlBuilder.Build(_urlToShorten);
@@ -61,13 +61,13 @@ namespace UrlShortener.UnitTests.Builders
         public void Build_WhenShortenedUrlRepositoryGetShortUrlReturnsNull_ShouldCallRandomUrlGeneratorGenerate()
         {
             // Arrange
-            _MockShortenedUrlrepository.Setup(x => x.GetShortUrl(_urlToShorten.Url)).Returns((string)null);
+            _MockShortenedUrlrepository.Setup(x => x.GetByShortUrl(_urlToShorten.Url)).Returns((ShortenedUrl)null);
 
             // Act
             _ = _shortenedUrlBuilder.Build(_urlToShorten);
 
             // Assert
-            _MockShortenedUrlrepository.Verify(x => x.GetShortUrl(_urlToShorten.Url));
+            _MockShortenedUrlrepository.Verify(x => x.GetByShortUrl(_urlToShorten.Url));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace UrlShortener.UnitTests.Builders
             var shortUrl = "abcdefghijk";
 
 
-            _MockShortenedUrlrepository.Setup(x => x.GetShortUrl(_urlToShorten.Url)).Returns((string)null);
+            _MockShortenedUrlrepository.Setup(x => x.GetByShortUrl(_urlToShorten.Url)).Returns((ShortenedUrl)null);
             _MockRandomUrlGenerator.Setup(x => x.Generate()).Returns(shortUrl);
 
             // Act
@@ -98,7 +98,7 @@ namespace UrlShortener.UnitTests.Builders
                 ShortUrl = shortUrl
             };
 
-            _MockShortenedUrlrepository.Setup(x => x.GetShortUrl(_urlToShorten.Url)).Returns((string)null);
+            _MockShortenedUrlrepository.Setup(x => x.GetByShortUrl(_urlToShorten.Url)).Returns((ShortenedUrl)null);
             _MockRandomUrlGenerator.Setup(x => x.Generate()).Returns(shortUrl);
 
             // Act
