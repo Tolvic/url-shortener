@@ -6,13 +6,17 @@ using System.Linq;
 using UrlShortener.Models;
 using Moq;
 using UrlShortener.Validators;
+using UrlShortener.ModelBuilder;
 
 namespace UrlShortener.UnitTests.Controllers
 {
     class ShortUrlControllerTests
     {
         private UrlToShorten _validUrlToShorten;
+        private const string _shortUrl = "abcdefghijk";
+
         private Mock<IUrlValidator> _mockUrlValidator;
+        private Mock<IShortenedUrlBuilder> _mockShortenedUrlBuilder;
         private ShortUrlController _shortUrlController;
 
         [SetUp]
@@ -24,7 +28,8 @@ namespace UrlShortener.UnitTests.Controllers
             };
 
             _mockUrlValidator = new Mock<IUrlValidator>();
-            _shortUrlController = new ShortUrlController(_mockUrlValidator.Object);
+            _mockShortenedUrlBuilder = new Mock<IShortenedUrlBuilder>();
+            _shortUrlController = new ShortUrlController(_mockUrlValidator.Object, _mockShortenedUrlBuilder.Object);
         }
 
         [Test]
@@ -50,7 +55,7 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
-        public void Shorten_whenModleStateIsInvalid_shouldReturnBadRequest()
+        public void Shorten_WhenModleStateIsInvalid_ShouldReturnBadRequest()
         {
             // Arrange
             _shortUrlController.ModelState.AddModelError("error", "error");
@@ -63,7 +68,7 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
-        public void Shorten_whenModleStateIsvalid_shouldCallUrlValidatorIsUrl()
+        public void Shorten_WhenModleStateIsvalid_ShouldCallUrlValidatorIsUrl()
         {
             // Act
             var result = _shortUrlController.Shorten(_validUrlToShorten);
@@ -73,7 +78,7 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
-        public void Shorten_whenUrlValidatorReturnsFalse_shouldReturnBadRequest()
+        public void Shorten_WhenUrlValidatorReturnsFalse_ShouldReturnBadRequest()
         {
             // Arrange
             _mockUrlValidator.Setup(x => x.IsUrl(_validUrlToShorten.Url)).Returns(false);
@@ -86,16 +91,54 @@ namespace UrlShortener.UnitTests.Controllers
         }
 
         [Test]
-        public void Shorten_whenpassedvalidUrlToShorten_shouldReturnOkResult()
+        public void Shorten_WhenUrlIsValid_ShouldCallShortenedUrlBuilder()
         {
             // Arrange
-            _mockUrlValidator.Setup(x => x.IsUrl(_validUrlToShorten.Url)).Returns(true);
+            SetupHappyPathMocking();
 
             // Act
             var result = _shortUrlController.Shorten(_validUrlToShorten);
 
             // Assert
-            result.Should().BeOfType<OkResult>();
+            _mockShortenedUrlBuilder.Verify(x => x.Build(It.Is<UrlToShorten>(x => x.Url == _validUrlToShorten.Url)), Times.Once);
+        }
+
+        [Test]
+        public void Shorten_whenPassedValidUrlToShorten_ShouldReturnOkResult()
+        {
+            // Arrange
+            SetupHappyPathMocking();
+
+            // Act
+            var result = _shortUrlController.Shorten(_validUrlToShorten);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+        }
+
+        [Test]
+        public void Shorten_WhenUrlIsValid_ShouldReuturnValueFromUrlBuilder()
+        {
+            // Arrange
+            SetupHappyPathMocking();
+
+            // Act
+            var result = _shortUrlController.Shorten(_validUrlToShorten) as OkObjectResult;
+
+            // Assert
+            result.Value.Should().Be(_shortUrl);
+        }
+
+        private void SetupHappyPathMocking()
+        {
+            var shortededUrl = new ShortenedUrl
+            {
+                Url = _validUrlToShorten.Url,
+                ShortUrl = _shortUrl
+            };
+
+            _mockUrlValidator.Setup(x => x.IsUrl(_validUrlToShorten.Url)).Returns(true);
+            _mockShortenedUrlBuilder.Setup(x => x.Build(It.Is<UrlToShorten>(x => x.Url == _validUrlToShorten.Url))).Returns(shortededUrl);
         }
     }
 }
