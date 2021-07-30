@@ -1,5 +1,5 @@
 # URL Shortener
-A simple URL shortene built using:
+A simple URL shortener built using:
 * .NET 5
 * Entity Framework Core
 * JQuery
