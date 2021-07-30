@@ -17,7 +17,7 @@ namespace UrlShortener.ModelBuilder
 
         public ShortenedUrl Build(UrlToShorten urlToShorten)
         {
-            var result = _shortenedUrlRepository.GetByShortUrl(urlToShorten.Url);
+            var result = _shortenedUrlRepository.GetByLongUrl(urlToShorten.Url);
 
             if (result is null)
             {
