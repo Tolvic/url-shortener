@@ -4,9 +4,9 @@ namespace UrlShortener.Repository
 {
     public interface IShortenUrlRepository
     {
-        public string GetLongUrl(string shortUrl);
+        public ShortenedUrl GetByShortUrl(string shortUrl);
 
-        public string GetShortUrl(string shortUrl);
+        public ShortenedUrl GetByLongUrl(string longUrl);
 
         public void Add(ShortenedUrl shortenUrl);
     }

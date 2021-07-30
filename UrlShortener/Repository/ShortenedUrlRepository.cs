@@ -1,23 +1,32 @@
-﻿using System;
+﻿using System.Linq;
 using UrlShortener.Models;
 
 namespace UrlShortener.Repository
 {
     public class ShortenedUrlRepository : IShortenUrlRepository
     {
-        public string GetLongUrl(string shortUrl)
+        private UrlShortenerContext _context;
+
+        public ShortenedUrlRepository(UrlShortenerContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public string GetShortUrl(string shortUrl)
+        public ShortenedUrl GetByShortUrl(string shortUrl)
         {
-            throw new NotImplementedException();
+            return _context.ShortenedUrl.SingleOrDefault(x => x.ShortUrl == shortUrl);
+        }
+
+        public ShortenedUrl GetByLongUrl(string longUrl)
+        {
+            return _context.ShortenedUrl.SingleOrDefault(x => x.Url == longUrl);
         }
 
         public void Add(ShortenedUrl shortenUrl)
-        {
+        {            
+            _context.Add(shortenUrl);
 
+            _context.SaveChanges();
         }
     }
 }
