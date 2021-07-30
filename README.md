@@ -5,6 +5,13 @@ A simple URL shortene built using:
 * JQuery
 * Bootstrap
 
+Unit Testing is achieved using:
+* nUnit
+* Moq
+* Fluent Assertions
+* Jasmine
+
+This is very much an MVP and lots of imporvements can be made. See future developments section for more details. 
 
 
 ## Local Setup
@@ -50,3 +57,14 @@ From within the Unit test project directory, run the following command
 `{your user folder}\.nuget\packages\chutzpah\4.4.11\tools\chutzpah.console.exe Scripts`
 
 Individual test files can be specified rather than the entire scripts folder if you prefer
+
+
+## Future Developent Plans
+- [ ] Add Integration Tests
+- [ ] Add Functional/End2End Tests using Selenium
+- [ ] Make Asynchronous
+- [ ] Use a more sophisticated means of generating short URLs 
+- [ ] defensive programming with all classes employing guard clauses
+- [ ] Validate that a short url is not already in db table before attempting to add
+- [ ] Better error handling
+- [ ] Logging
