@@ -13,15 +13,13 @@ describe("urlShortener.urlShortener", function () {
 
     var utilitiesModule = urlShortener.utilities;
     var urlShortenerModule = urlShortener.urlShortener;
-    var form, submitButton, urlField, shortUrlField, copyToClipboardButton, errorMessage, outputGroup;
+    var form, shortUrlField, copyToClipboardButton, errorMessage, outputGroup;
 
     beforeEach(function () {
         var mockHtml = getMockHtml();
         var mockHtmlWithContainer = addMockHtmlContainer(mockHtml);
         appendToDocumentBody(mockHtmlWithContainer);
         form = $("#url-shortener");
-        submitButton = form.find("button");
-        urlField = $("#long-url");
         shortUrlField = $("#short-url");
         copyToClipboardButton = $("#copy-to-clipboard-button");
         errorMessage = $("#error-message");
