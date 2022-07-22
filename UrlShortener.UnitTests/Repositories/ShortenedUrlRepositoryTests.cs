@@ -42,7 +42,7 @@ namespace UrlShortener.UnitTests.Repositories
         }
 
         [Test]
-        public void GetByShortUrl_WhenResultIsFound_returnsNullExpectedResult()
+        public void GetByShortUrl_WhenResultIsFound_returnsExpectedResult()
         {
             var expectedResult = GetSeedData();
             _context.ShortenedUrl.Add(expectedResult);
@@ -66,7 +66,7 @@ namespace UrlShortener.UnitTests.Repositories
         }
 
         [Test]
-        public void GetByLongUrl_WhenResultIsFound_returnsNullExpectedResult()
+        public void GetByLongUrl_WhenResultIsFound_returnsExpectedResult()
         {
             var expectedResult = GetSeedData();
             _context.ShortenedUrl.Add(expectedResult);
